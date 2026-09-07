@@ -21,5 +21,6 @@ public class Comment
 
     // Reference userId in User Table
 
+    [Required]
     public DateTime TimeStamp {get; set;}
 }
