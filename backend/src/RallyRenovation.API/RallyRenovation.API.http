@@ -1,0 +1,6 @@
+@RallyRenovation.API_HostAddress = http://localhost:5260
+
+GET {{RallyRenovation.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
