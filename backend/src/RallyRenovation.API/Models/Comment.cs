@@ -17,9 +17,9 @@ public class Comment
     public required string CommentText {get; set;}
 
     [Required]
-    public required string CommenterId {get; set;}
+    public required string UserId {get; set;}
 
-    // Reference userId in User Table
+    public ApplicationUser? User {get; set;}
 
     [Required]
     public DateTime TimeStamp {get; set;}

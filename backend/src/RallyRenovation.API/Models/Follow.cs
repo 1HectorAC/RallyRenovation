@@ -10,12 +10,12 @@ public class Follow
     [Required]
     public required string FollowerUserId {get; set;}
 
-    // need user Model
+    public ApplicationUser? FollowerUser {get; set;}
 
     [Required]
     public required string FollowingUserId {get; set;}
 
-    // need user Model
+    public ApplicationUser? FollowingUser {get; set;}
 
     [Required]
     public DateTime TimeStamp {get; set;}

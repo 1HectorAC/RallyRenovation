@@ -8,9 +8,9 @@ public class Renovation
     public int Id {get; set;}
 
     [Required]
-    public required string OwnerId {get; set;}
+    public required string UserId {get; set;}
 
-    // Reference User Table
+    public ApplicationUser? User {get; set;}
 
     [Required]
     [StringLength(200)]
@@ -46,4 +46,8 @@ public class Renovation
 
     [Required]
     public required DateTime TimeStamp {get; set;}
+
+    ICollection<Comment> Comments {get; set;} = [];
+
+    ICollection<Like> Likes {get; set;} = [];
 }

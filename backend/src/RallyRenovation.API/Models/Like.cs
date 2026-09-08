@@ -10,6 +10,8 @@ public class Like
     [Required]
     public required string UserId {get; set;}
 
+    public ApplicationUser? User {get; set;}
+
     [Required]
     public int RenovationId {get; set;}
 
