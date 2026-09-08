@@ -38,6 +38,17 @@ public class AppDbContext: IdentityDbContext<ApplicationUser>
             .HasForeignKey(i => i.FromUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Entity<Comment>()
+            .HasOne(i => i.Renovation)
+            .WithMany(i => i.Comments)
+            .HasForeignKey(i => i.RenovationId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Like>()
+            .HasOne(i => i.Renovation)
+            .WithMany(i => i.Likes)
+            .HasForeignKey(i => i.RenovationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     public DbSet<Renovation> Renovations {get; set;}

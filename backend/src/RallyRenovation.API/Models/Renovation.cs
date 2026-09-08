@@ -47,7 +47,7 @@ public class Renovation
     [Required]
     public required DateTime TimeStamp {get; set;}
 
-    ICollection<Comment> Comments {get; set;} = [];
+    public ICollection<Comment> Comments {get; set;} = [];
 
-    ICollection<Like> Likes {get; set;} = [];
+    public ICollection<Like> Likes {get; set;} = [];
 }
