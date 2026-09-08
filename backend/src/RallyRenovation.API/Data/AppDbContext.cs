@@ -26,6 +26,18 @@ public class AppDbContext: IdentityDbContext<ApplicationUser>
             .HasForeignKey(i => i.FollowingUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Entity<MessageThread>()
+            .HasOne(i => i.ToUser)
+            .WithMany(i => i.ToMessageThreads)
+            .HasForeignKey(i => i.ToUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<MessageThread>()
+            .HasOne(i => i.FromUser)
+            .WithMany(i => i.FromMessageThreads)
+            .HasForeignKey(i => i.FromUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
     }
 
     public DbSet<Renovation> Renovations {get; set;}

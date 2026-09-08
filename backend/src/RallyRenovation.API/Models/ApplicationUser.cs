@@ -16,4 +16,10 @@ public class ApplicationUser: IdentityUser
 
     public ICollection<Renovation> Renovations {get; set;} = [];
 
+    public ICollection<MessageThread> ToMessageThreads {get; set;} = [];
+
+    public ICollection<MessageThread> FromMessageThreads {get; set;} = [];
+
+    public ICollection<Message> Messages {get ; set;} = [];
+
 }
