@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RallyRenovation.API.Controllers;
@@ -7,6 +8,7 @@ namespace RallyRenovation.API.Controllers;
 [Route("api/renovations")]
 public class RenovationController: ControllerBase
 {
+    [Authorize]
     [HttpGet]
     public IActionResult GetRenovations()
     {
