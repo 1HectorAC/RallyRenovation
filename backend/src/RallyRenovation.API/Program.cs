@@ -2,6 +2,7 @@
 using System.Text;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -24,7 +25,7 @@ builder.Services.AddIdentityCore<ApplicationUser>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddSignInManager<SignInManager<ApplicationUser>>();
 
-var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "";
+var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new InvalidOperationException("Secret Key not found in environment variable.");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -44,6 +45,21 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthentication();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+
+        var error = context.Features.Get<IExceptionHandlerFeature>();
+        if(error != null)
+        {
+            var response = new {message = "An unexpected error occurred."};
+        }
+    });
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
+    [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
         var user = new ApplicationUser
@@ -39,6 +40,8 @@ public class AuthController : ControllerBase
             return BadRequest(result.Errors);
         return Ok("User Created");
     }
+
+    [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -55,7 +58,7 @@ public class AuthController : ControllerBase
             new Claim(JwtRegisteredClaimNames.Email, user.Email)
         };
 
-        var secretKey = _configuration["JWT_SECRET"] ?? "";
+        var secretKey = _configuration["JWT_SECRET"] ?? throw new InvalidOperationException("Secret Key not found in environment variable.");
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
