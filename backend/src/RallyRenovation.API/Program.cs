@@ -9,6 +9,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RallyRenovation.API.Data;
 using RallyRenovation.API.Models;
+using RallyRenovation.API.Services;
+using RallyRenovation.API.Services.Implementations;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +43,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 });
+
+builder.Services.AddScoped<IRenovationService,RenovationService>();
 
 builder.Services.AddAuthentication();
 
