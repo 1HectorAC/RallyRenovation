@@ -19,11 +19,9 @@ public class RenovationController : ControllerBase
         _service = service;
     }
 
-    //TODO: fix endpoint selection ambig. issue with Gets.
-
     [AllowAnonymous]
     [HttpGet("public")]
-    public async Task<ActionResult<List<Renovation>>> GetPublicRenovations(int page = 1, int pageSize = 3)
+    public async Task<ActionResult<List<Renovation>>> GetPublicRenovations(int page = 1, int pageSize = 10)
     {
         var result = await _service.GetPublicFilteredRenovations(page, pageSize);
 
@@ -33,8 +31,8 @@ public class RenovationController : ControllerBase
         return Ok(result.Value);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<List<Renovation>>> GetRenovations(int page = 1, int pageSize = 3)
+    [HttpGet("byUser")]
+    public async Task<ActionResult<List<Renovation>>> GetRenovations(int page = 1, int pageSize = 10)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("UserId of logged in user did not exits.");
 
