@@ -38,6 +38,6 @@ public class AddRenovationDto
     public string? AfterImageList {get; set;}
 
     [Required]
-    public required DateTime TimeStamp {get; set;} = DateTime.UtcNow;
+    public DateTime TimeStamp {get; set;} = DateTime.UtcNow;
 
 }

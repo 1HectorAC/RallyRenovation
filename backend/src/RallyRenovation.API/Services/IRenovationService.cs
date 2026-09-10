@@ -1,20 +1,21 @@
 
 using RallyRenovation.API.DTO;
 using RallyRenovation.API.Models;
+using RallyRenovation.API.Utilities;
 
 namespace RallyRenovation.API.Services;
 
 public interface IRenovationService
 {
-    Task<List<Renovation>> GetPublicFilteredRenovations(int page, int pageSize);
+    Task<Result<List<Renovation>>> GetPublicFilteredRenovations(int page, int pageSize);
 
-    Task<List<Renovation>> GetFilteredRenovationsByUser(string userId, int page, int pageSize);
+    Task<Result<List<Renovation>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize);
 
-    Task<Renovation> GetRenovation(int id);
+    Task<Result<Renovation>> GetRenovation(int id);
 
-    Task AddRenovation(AddRenovationDto dto);
+    Task<Result> AddRenovation(AddRenovationDto dto);
 
-    Task UpdateRenovation(int id, AddRenovationDto dto);
+    Task<Result> UpdateRenovation(int id, AddRenovationDto dto);
 
-    Task DeleteRenovation(int id);
+    Task<Result> DeleteRenovation(int id);
 }
