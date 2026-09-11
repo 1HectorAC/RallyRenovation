@@ -1,17 +1,30 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthService } from "../services/AuthService";
+import { useAuth } from "../hooks/useAuth";
+import type { AuthUser } from "../context/AuthContext";
 
-function Login() {
-    const [email, setEmail] = useState<string | null>("");
-    const [password, setPassword] = useState<string | null>("");
-    const [error, setError] = useState<string | null>();
+function Login(){
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [error, setError] = useState<string>();
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
-    function onSubmit() {
+    async function onSubmit() {
         if (email == "" || password == "") {
             setError("All fields must be entered");
             return;
         }
-
-        // api call here
+        // TODO: add more validation
+        try{
+            const data: AuthUser  = await AuthService.login(email, password);
+            login(data);
+            navigate("/Dashboard")
+        } catch(err){
+            if(err instanceof Error)
+                setError(err.message);
+        }
 
     };
 
