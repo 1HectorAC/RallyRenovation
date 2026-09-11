@@ -22,7 +22,6 @@ public class Renovation
 
     public bool IsPrivate {get; set;} = true;
 
-
     [StringLength(1000)]
     public string? CatagoryList {get; set;}
     
