@@ -20,7 +20,8 @@ public class RenovationService : IRenovationService
             return Result<List<Renovation>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
 
         var renovations = _context.Renovations
-            .AsNoTracking();
+            .AsNoTracking()
+            .OrderByDescending(i => i.TimeStamp);
 
         var result = await renovations.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
@@ -34,6 +35,7 @@ public class RenovationService : IRenovationService
 
         var renovations = _context.Renovations
             .AsNoTracking()
+            .OrderByDescending(i => i.TimeStamp)
             .Where(i => i.UserId == userId);
 
         var result = await renovations.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
