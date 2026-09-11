@@ -15,11 +15,12 @@ using RallyRenovation.API.Services.Implementations;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowViteApp",
     policy => policy
-        .WithOrigins(Environment.GetEnvironmentVariable("VITE_URL"))
+        .WithOrigins(Environment.GetEnvironmentVariable("VITE_URL") ?? "")
         .AllowAnyMethod()
         .AllowAnyHeader()
     );
@@ -73,7 +74,7 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-app.UserCors("AllowViteApp");
+app.UseCors("AllowViteApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
