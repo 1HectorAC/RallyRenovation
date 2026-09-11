@@ -10,7 +10,6 @@ const MyNavbar: React.FC = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -37,16 +36,13 @@ const MyNavbar: React.FC = () => {
                 <div style={{display:'inline'}} >{user.email}</div>
                 <Nav.Link style={{display:'inline'}}  onClick={handleLogout}>Logout</Nav.Link>
               </span>
-
             )}
             {!isAuthenticated && (
               <span>
                 <Nav.Link style={{display:'inline'}}  as={Link} to="/Register">Register</Nav.Link>
                 <Nav.Link style={{display:'inline'}}  as={Link} to="/Login">Login</Nav.Link>
               </span>
-
             )}
-
 
           </Nav>
         </Navbar.Collapse>
