@@ -16,4 +16,8 @@ public class RegisterDto
     [Required]
     [StringLength(100)]
     public required string Password {get; set;}
+
+    [Required]
+    [StringLength(100)]
+    public required string ConfirmPassword {get; set;}
 }
