@@ -8,6 +8,7 @@ function Login(){
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -16,6 +17,7 @@ function Login(){
             setError("All fields must be entered");
             return;
         }
+        setIsLoading(true);
         // TODO: add more validation
         try{
             const data: AuthUser  = await AuthService.login(email, password);
@@ -24,6 +26,7 @@ function Login(){
         } catch(err){
             if(err instanceof Error)
                 setError(err.message);
+            setIsLoading(false);
         }
 
     };
@@ -36,6 +39,7 @@ function Login(){
             <label htmlFor="password">Password</label>
             <input name="password" type="text" onChange={i => setPassword(i.target.value)} />
             {error && <span className="error">{error}</span>}
+            {isLoading && <span>Loading...</span>}
             <button onClick={onSubmit}>Enter</button>
         </div>
     )

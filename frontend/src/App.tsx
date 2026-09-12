@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -11,8 +11,12 @@ import CreateRenovation from './pages/CreateRenovation'
 import EditRenovation from './pages/EditRenovation'
 import Renovation from './pages/Renovation'
 import MyNavbar from './components/MyNavbar'
+import { useAuth } from './hooks/useAuth'
+import Message from './pages/Message'
+import Liked from './pages/Liked'
 
 function App() {
+  const {isAuthenticated} = useAuth();
 
   return (
     <BrowserRouter>
@@ -23,10 +27,14 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/Renovations" element={<BrowseRenovation />} />
         <Route path="/Renovation" element={<Renovation />} />
-        <Route path="/Dashboard" element={<UserDashboard />} />
-        <Route path="/RenovationDashboard" element={<RenovationDashboard />} />
-        <Route path="/RenovationCreate" element={<CreateRenovation />} />
-        <Route path="/RenovationEdit" element={<EditRenovation />} />
+
+        <Route path="/Dashboard" element={isAuthenticated ? <UserDashboard /> : <Navigate to="/login" />} />
+        <Route path="/RenovationDashboard" element={isAuthenticated ? <RenovationDashboard /> : <Navigate to="/login" />} />
+        <Route path="/RenovationCreate" element={isAuthenticated ? <CreateRenovation /> : <Navigate to="/login" />} />
+        <Route path="/RenovationEdit" element={isAuthenticated ? <EditRenovation /> : <Navigate to="/login" />} />
+        <Route path="/Messages" element={isAuthenticated ? <Message /> : <Navigate to="/login" />} />
+        <Route path="/Liked" element={isAuthenticated ? <Liked /> : <Navigate to="/login" />} />
+
       </Routes>
     </BrowserRouter>
   )
