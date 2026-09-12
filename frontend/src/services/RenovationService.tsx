@@ -3,7 +3,7 @@ const API_URL = import.meta.env.VITE_API_URL + "/api/renovations";
 
 export interface renovationType {
     id: Number;
-    UserId: string | null;
+    userId: string | null;
     title: string;
     description: string;
     isPrivate: boolean;
@@ -40,25 +40,33 @@ export const RenovationService = {
         const data: renovationType[] = await res.json();
         return data;
     },
+
     getAllByUser: async (token: string) => {
+        console.log("RenovationService: getAllByUser called")
+
         const res = await fetch(API_URL + "/byUser", {
             headers: { "Authorization": `Bearer ${token}` }
         });
         if (!res.ok)
             throw new Error("API call failed");
-        return res.json();
+        const data: renovationType[] = await res.json();
+        return data;
     },
+
     get: async (token: string | null, id: Number) => {
-        const headers = { Authorization: token ? `Bearer ${token}` : "" }
+        console.log("RenovationService: getcalled")
+
+        const headers = { "Authorization": token ? `Bearer ${token}` : "" }
 
         const res = await fetch(API_URL + `/${id}`, {
             headers
         });
         if (!res.ok)
             throw new Error("API call failed");
-        return res.json();
-
+        const data: renovationType = await res.json();
+        return data;
     },
+
     add: async (token: string, renovation: addRenovationDtoType) => {
         const res = await fetch(API_URL, {
             method: "POST",
@@ -72,6 +80,7 @@ export const RenovationService = {
             throw Error("API call failed");
         return res;
     },
+
     update: async (token: string, id: Number, renovation: addRenovationDtoType) => {
         const res = await fetch(API_URL + `/${id}`, {
             method: "PUT",
@@ -85,6 +94,7 @@ export const RenovationService = {
             throw Error("API call failed");
         return res;
     },
+
     delete: async (token: string, id: Number) => {
         const res = await fetch(API_URL + `/${id}`, {
             method: "DELETE",

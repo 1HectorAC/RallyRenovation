@@ -26,7 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/Renovations" element={<BrowseRenovation />} />
-        <Route path="/Renovation" element={<Renovation />} />
+        <Route path="/Renovation/:id" element={<Renovation />} />
 
         <Route path="/Dashboard" element={isAuthenticated ? <UserDashboard /> : <Navigate to="/login" />} />
         <Route path="/RenovationDashboard" element={isAuthenticated ? <RenovationDashboard /> : <Navigate to="/login" />} />

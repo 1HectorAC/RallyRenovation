@@ -45,7 +45,7 @@ public class RenovationController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Renovation>> GetRenovation(int id)
     {
         var result = await _service.GetRenovation(id);
@@ -78,7 +78,7 @@ public class RenovationController : ControllerBase
         return Ok();
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateRenovation(int id, AddRenovationDto dto)
     {
         // TODO: check if userId matches current user
@@ -89,7 +89,7 @@ public class RenovationController : ControllerBase
 
         return Ok();
     }
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteRenovation(int id)
     {
         // TODO: check if userId of Renovation matches current user
