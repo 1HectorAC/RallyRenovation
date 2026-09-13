@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../services/AuthService";
 import { useAuth } from "../hooks/useAuth";
 import type { AuthUser } from "../context/AuthContext";
 
-function Login(){
+function Login() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>();
@@ -12,19 +12,20 @@ function Login(){
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    async function onSubmit() {
+    async function onSubmit(e:React.ChangeEvent) {
+        e.preventDefault();
         if (email == "" || password == "") {
             setError("All fields must be entered");
             return;
         }
         setIsLoading(true);
         // TODO: add more validation
-        try{
-            const data: AuthUser  = await AuthService.login(email, password);
+        try {
+            const data: AuthUser = await AuthService.login(email, password);
             login(data);
             navigate("/Dashboard")
-        } catch(err){
-            if(err instanceof Error)
+        } catch (err) {
+            if (err instanceof Error)
                 setError(err.message);
             setIsLoading(false);
         }
@@ -34,13 +35,16 @@ function Login(){
     return (
         <div>
             <h1>Login Page</h1>
-            <label htmlFor="email">Email</label>
-            <input name="email" type="text" onChange={i => setEmail(i.target.value)} />
-            <label htmlFor="password">Password</label>
-            <input name="password" type="text" onChange={i => setPassword(i.target.value)} />
-            {error && <span className="error">{error}</span>}
-            {isLoading && <span>Loading...</span>}
-            <button onClick={onSubmit}>Enter</button>
+            <form onSubmit={onSubmit}>
+                <label htmlFor="email">Email</label>
+                <input name="email" type="text" onChange={i => setEmail(i.target.value)} />
+                <label htmlFor="password">Password</label>
+                <input name="password" type="text" onChange={i => setPassword(i.target.value)} />
+                {error && <span className="error">{error}</span>}
+                {isLoading && <span>Loading...</span>}
+                <button type="submit">Enter</button>
+            </form>
+
         </div>
     )
 }

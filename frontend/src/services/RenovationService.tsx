@@ -18,13 +18,12 @@ export interface renovationType {
 }
 
 interface addRenovationDtoType {
-    userId: string | null;
     title: string;
     description: string;
     isPrivate: boolean;
     catagoryList: string | null;
-    cost: Number | null;
-    totalDays: Number | null;
+    cost: Number | null | undefined;
+    totalDays: Number | null | undefined;
     company: string | null;
     location: string | null;
     beforeImageList: string | null;
@@ -54,7 +53,7 @@ export const RenovationService = {
     },
 
     get: async (token: string | null, id: Number) => {
-        console.log("RenovationService: getcalled")
+        console.log("RenovationService: get called")
 
         const headers = { "Authorization": token ? `Bearer ${token}` : "" }
 
@@ -68,6 +67,8 @@ export const RenovationService = {
     },
 
     add: async (token: string, renovation: addRenovationDtoType) => {
+        console.log("RenovationService: add called")
+
         const res = await fetch(API_URL, {
             method: "POST",
             body: JSON.stringify(renovation),
@@ -78,7 +79,7 @@ export const RenovationService = {
         });
         if (!res.ok)
             throw Error("API call failed");
-        return res;
+        //return res;
     },
 
     update: async (token: string, id: Number, renovation: addRenovationDtoType) => {
