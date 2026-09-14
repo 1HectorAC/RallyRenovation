@@ -1,14 +1,33 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RenovationService, type renovationType } from "../services/RenovationService";
 import { useAuth } from "../hooks/useAuth";
+
+//TODO: check if user owns renovation if private
 
 function Renovation() {
     const { id } = useParams();
     const [renovation, setRenovation] = useState<renovationType | null>();
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const { user } = useAuth();
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+
+    async function onClickDelete() {
+        try {
+            if (!user) {
+                throw Error();
+            }
+            await RenovationService.delete(user?.token, Number(id));
+
+            // TODO: redirecting to modal and then redirect elsewhere
+            navigate("/RenovationDashboard");
+
+        } catch (err) {
+            if (err instanceof Error)
+                setError(err.message);
+        }
+    }
 
     useEffect(() => {
         const fetchRenovation = async () => {
@@ -22,20 +41,23 @@ function Renovation() {
             } finally {
                 setIsLoading(false);
             }
-
         }
         fetchRenovation();
     }, [])
     return (
         <div>
             <h1>Renovation</h1>
-            <Link to="/RenovationEdit"><button>Edit</button></Link>
-            <button>Delete</button>
+
+            {isAuthenticated &&
+                <div>
+                    <Link to={`/RenovationEdit/${id}`}><button>Edit</button></Link>
+                    <button onClick={onClickDelete}>Delete</button>
+                </div>
+            }
 
             <p>id: {id} </p>
             {error && <p className="error">{error}</p>}
             {isLoading && <p>Loading...</p>}
-
 
             {renovation && (
                 <div>

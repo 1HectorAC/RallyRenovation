@@ -79,10 +79,11 @@ export const RenovationService = {
         });
         if (!res.ok)
             throw Error("API call failed");
-        //return res;
     },
 
-    update: async (token: string, id: Number, renovation: addRenovationDtoType) => {
+    edit: async (token: string, id: Number, renovation: addRenovationDtoType) => {
+        console.log("RenovationService: edit called")
+
         const res = await fetch(API_URL + `/${id}`, {
             method: "PUT",
             body: JSON.stringify(renovation),
@@ -93,10 +94,11 @@ export const RenovationService = {
         });
         if (!res.ok)
             throw Error("API call failed");
-        return res;
     },
 
     delete: async (token: string, id: Number) => {
+                console.log("RenovationService: delete called")
+
         const res = await fetch(API_URL + `/${id}`, {
             method: "DELETE",
             headers: {
@@ -106,7 +108,6 @@ export const RenovationService = {
         });
         if (!res.ok)
             throw Error("API call failed");
-        return res;
     }
 
 }

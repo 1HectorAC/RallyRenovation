@@ -82,19 +82,21 @@ public class RenovationService : IRenovationService
 
     public async Task<Result> UpdateRenovation(int id, AddRenovationDto dto)
     {
-        var result = await GetRenovation(id);
-        if (!result.IsSuccess || result.Value == null)
-            return Result.Fail("Error: UpdateRenovation. Couldnt get renovation");
+         var renovation = await _context.Renovations
+            .FirstOrDefaultAsync(i => i.Id == id);
 
-        result.Value.Title = dto.Title;
-        result.Value.Description = dto.Description;
-        result.Value.IsPrivate = dto.IsPrivate;
-        result.Value.CatagoryList = dto.CatagoryList;
-        result.Value.Cost = dto.Cost;
-        result.Value.TotalDays = dto.TotalDays;
-        result.Value.Company = dto.Company;
-        result.Value.BeforeImageList = dto.BeforeImageList;
-        result.Value.AfterImageList = dto.AfterImageList;
+        if (renovation == null)
+            return Result.Fail($"Error: UpdateRenovation: renovation with id {id} not found");
+
+        renovation.Title = dto.Title;
+        renovation.Description = dto.Description;
+        renovation.IsPrivate = dto.IsPrivate;
+        renovation.CatagoryList = dto.CatagoryList;
+        renovation.Cost = dto.Cost;
+        renovation.TotalDays = dto.TotalDays;
+        renovation.Company = dto.Company;
+        renovation.BeforeImageList = dto.BeforeImageList;
+        renovation.AfterImageList = dto.AfterImageList;
 
         await _context.SaveChangesAsync();
         return Result.Ok();
@@ -102,11 +104,13 @@ public class RenovationService : IRenovationService
 
     public async Task<Result> DeleteRenovation(int id)
     {
-        var result = await GetRenovation(id);
-        if (!result.IsSuccess || result.Value == null)
-            return Result.Fail("Error: UpdateRenovation. Couldnt get renovation");
+        var renovation = await _context.Renovations
+            .FirstOrDefaultAsync(i => i.Id == id);
 
-        _context.Remove(result.Value);
+        if (renovation == null)
+            return Result.Fail($"Error: UpdateRenovation: renovation with id {id} not found");
+
+        _context.Remove(renovation);
         await _context.SaveChangesAsync();
 
         return Result.Ok();

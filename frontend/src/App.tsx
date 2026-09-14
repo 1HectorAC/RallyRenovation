@@ -31,7 +31,7 @@ function App() {
         <Route path="/Dashboard" element={isAuthenticated ? <UserDashboard /> : <Navigate to="/login" />} />
         <Route path="/RenovationDashboard" element={isAuthenticated ? <RenovationDashboard /> : <Navigate to="/login" />} />
         <Route path="/RenovationCreate" element={isAuthenticated ? <CreateRenovation /> : <Navigate to="/login" />} />
-        <Route path="/RenovationEdit" element={isAuthenticated ? <EditRenovation /> : <Navigate to="/login" />} />
+        <Route path="/RenovationEdit/:id" element={isAuthenticated ? <EditRenovation /> : <Navigate to="/login" />} />
         <Route path="/Messages" element={isAuthenticated ? <Message /> : <Navigate to="/login" />} />
         <Route path="/Liked" element={isAuthenticated ? <Liked /> : <Navigate to="/login" />} />
 
