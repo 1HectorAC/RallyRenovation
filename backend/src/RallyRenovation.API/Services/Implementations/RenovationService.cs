@@ -14,33 +14,55 @@ public class RenovationService : IRenovationService
     {
         _context = context;
     }
-    public async Task<Result<List<Renovation>>> GetPublicFilteredRenovations(int page, int pageSize)
+    public async Task<Result<List<RenovationShortDto>>> GetPublicFilteredRenovations(int page, int pageSize)
     {
         if (page < 1 || pageSize < 1)
-            return Result<List<Renovation>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
+            return Result<List<RenovationShortDto>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
 
         var renovations = _context.Renovations
+            .Include(i=> i.User)
             .AsNoTracking()
             .OrderByDescending(i => i.TimeStamp);
 
         var result = await renovations.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        return Result<List<Renovation>>.Ok(result);
+        var formatedResult = result.Select(
+            i => new RenovationShortDto
+            {
+                Id = i.Id,
+                Title = i.Title,
+                Description = i.Description,
+                OwnerName = i.User!.UserName!,
+                CatagoryList = i.CatagoryList
+            }).ToList();
+
+        return Result<List<RenovationShortDto>>.Ok(formatedResult);
     }
 
-    public async Task<Result<List<Renovation>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize)
+    public async Task<Result<List<RenovationShortDto>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize)
     {
         if (page < 1 || pageSize < 1)
-            return Result<List<Renovation>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
+            return Result<List<RenovationShortDto>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
 
         var renovations = _context.Renovations
+            .Include(i => i.User)
             .AsNoTracking()
             .OrderByDescending(i => i.TimeStamp)
             .Where(i => i.UserId == userId);
 
         var result = await renovations.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        return Result<List<Renovation>>.Ok(result);
+        var formatedResult = result.Select(
+                    i => new RenovationShortDto
+                    {
+                        Id = i.Id,
+                        Title = i.Title,
+                        Description = i.Description,
+                        OwnerName = i.User!.UserName!,
+                        CatagoryList = i.CatagoryList
+                    }).ToList();
+
+        return Result<List<RenovationShortDto>>.Ok(formatedResult);
     }
 
     public async Task<Result<Renovation>> GetRenovation(int id)
@@ -82,8 +104,8 @@ public class RenovationService : IRenovationService
 
     public async Task<Result> UpdateRenovation(int id, AddRenovationDto dto)
     {
-         var renovation = await _context.Renovations
-            .FirstOrDefaultAsync(i => i.Id == id);
+        var renovation = await _context.Renovations
+           .FirstOrDefaultAsync(i => i.Id == id);
 
         if (renovation == null)
             return Result.Fail($"Error: UpdateRenovation: renovation with id {id} not found");

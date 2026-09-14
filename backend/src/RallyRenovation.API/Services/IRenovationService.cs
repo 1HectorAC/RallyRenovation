@@ -7,9 +7,9 @@ namespace RallyRenovation.API.Services;
 
 public interface IRenovationService
 {
-    Task<Result<List<Renovation>>> GetPublicFilteredRenovations(int page, int pageSize);
+    Task<Result<List<RenovationShortDto>>> GetPublicFilteredRenovations(int page, int pageSize);
 
-    Task<Result<List<Renovation>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize);
+    Task<Result<List<RenovationShortDto>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize);
 
     Task<Result<Renovation>> GetRenovation(int id);
 
