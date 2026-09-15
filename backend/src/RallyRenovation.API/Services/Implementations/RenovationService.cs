@@ -194,8 +194,10 @@ public class RenovationService : IRenovationService
     public async Task<Result> LikeRenovation(int renovationId, string userId)
     {
         // Validation: check if like exits:
-        var likeCheck = await _context.Likes.FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
-        if(likeCheck != null)
+        var likeCheck = await _context.Likes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
+        if (likeCheck != null)
             return Result.Fail("Error: LikeRenovation, Like already exits");
 
         var renovation = await _context.Renovations.FirstOrDefaultAsync(i => i.Id == renovationId);
@@ -221,9 +223,23 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
+    public async Task<Result> UnLikeRenovation(int renovationId, string userId)
+    {
+        var like = await _context.Likes.FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
+        if (like == null)
+            return Result.Fail("Error: UnLikeRenovation, Like does not exits");
+
+        _context.Likes.Remove(like);
+        await _context.SaveChangesAsync();
+        return Result.Ok();
+
+    }
+
+
+
     public async Task<Result<List<RenovationShortDto>>> GetLikedRenovationsOfUser(string userId)
     {
- 
+
         var renovations = await _context.Renovations
             .Include(i => i.User)
             .AsNoTracking()
@@ -251,7 +267,7 @@ public class RenovationService : IRenovationService
         var followingCheck = _context.Follows
             .AsNoTracking()
             .FirstOrDefault(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
-        if(followingCheck != null)
+        if (followingCheck != null)
             return Result.Fail("Error: FollowUser, already following");
 
         var follow = new Follow
@@ -266,5 +282,17 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
+    public async Task<Result> UnFollowUser(string userId, string followingUserId)
+    {
+        var following = _context.Follows
+            .FirstOrDefault(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
+        if (following == null)
+            return Result.Fail("Error: FollowUser, already following");
+
+        _context.Follows.Remove(following);
+        await _context.SaveChangesAsync();
+        return Result.Ok();
+
+    }
 
 }
