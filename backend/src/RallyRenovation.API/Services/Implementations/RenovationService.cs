@@ -41,6 +41,7 @@ public class RenovationService : IRenovationService
 
     public async Task<Result<List<RenovationShortDto>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize)
     {
+        //TODO: validation if accessing renovation by user
         if (page < 1 || pageSize < 1)
             return Result<List<RenovationShortDto>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
 
@@ -65,16 +66,43 @@ public class RenovationService : IRenovationService
         return Result<List<RenovationShortDto>>.Ok(formatedResult);
     }
 
-    public async Task<Result<Renovation>> GetRenovation(int id)
+    public async Task<Result<RenovationLongDto>> GetRenovation(int id)
     {
+        // Consider splitting up Getting Renovation, comments, and total likes
         var renovation = await _context.Renovations
+            .Include(i => i.Comments)
+            .ThenInclude(i => i.User)
+            .Include(i => i.User)
+            .Include(i => i.Likes)
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id);
 
         if (renovation == null)
-            return Result<Renovation>.Fail($"Error: GetRenovation: renovation with id {id} not found");
+            return Result<RenovationLongDto>.Fail($"Error: GetRenovation: renovation with id {id} not found");
 
-        return Result<Renovation>.Ok(renovation);
+        var formatedResult = new RenovationLongDto
+        {
+            Id = renovation.Id,
+            UserId = renovation.UserId,
+            OwnerName = renovation.User!.UserName!,
+            Title = renovation.Title,
+            Description = renovation.Description,
+            IsPrivate = renovation.IsPrivate,
+            CatagoryList = renovation.CatagoryList,
+            Cost = renovation.Cost,
+            TotalDays = renovation.TotalDays,
+            Company = renovation.Company,
+            Location = renovation.Location,
+            BeforeImageList = renovation.BeforeImageList,
+            AfterImageList = renovation.AfterImageList,
+            Date = renovation.TimeStamp.Date.ToString(),
+            Comments = renovation.Comments.OrderByDescending(i => i.TimeStamp).Select(i => new RenovationCommentDto { CommentText = i.CommentText, SenderName = i.User!.UserName!, Date = i.TimeStamp.Date.ToString()}).ToList(),
+            TotalLikes = renovation.Likes.Count,
+            AccessedByOwner = false
+        };
+
+
+        return Result<RenovationLongDto>.Ok(formatedResult);
     }
 
     public async Task<Result> AddRenovation(AddRenovationDto dto)

@@ -32,9 +32,9 @@ public class RenovationLongDto
     public string? AfterImageList {get; set;}
 
     // consider just string of current day
-    public required DateTime TimeStamp {get; set;}
+    public required string Date {get; set;}
 
-    public List<Comment> Comments {get; set;} = [];
+    public List<RenovationCommentDto> Comments {get; set;} = [];
 
     public int TotalLikes {get; set;}
 

@@ -11,7 +11,7 @@ public interface IRenovationService
 
     Task<Result<List<RenovationShortDto>>> GetFilteredRenovationsByUser(string userId, int page, int pageSize);
 
-    Task<Result<Renovation>> GetRenovation(int id);
+    Task<Result<RenovationLongDto>> GetRenovation(int id);
 
     Task<Result> AddRenovation(AddRenovationDto dto);
 

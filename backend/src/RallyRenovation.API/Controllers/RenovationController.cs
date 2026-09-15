@@ -46,7 +46,7 @@ public class RenovationController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Renovation>> GetRenovation(int id)
+    public async Task<ActionResult<RenovationLongDto>> GetRenovation(int id)
     {
         var result = await _service.GetRenovation(id);
 
@@ -54,12 +54,18 @@ public class RenovationController : ControllerBase
             return BadRequest(result.Error);
 
         // Validate: check private/public and ownership
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (result.Value.IsPrivate)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null || userId != result.Value.UserId)
                 return Unauthorized("Error: GetRenovation action method: Renovation is private and the current user does not own it");
         }
+        if(userId != null && userId == result.Value.UserId)
+        {
+            result.Value.AccessedByOwner = true;
+        }
+
 
         return Ok(result.Value);
     }
