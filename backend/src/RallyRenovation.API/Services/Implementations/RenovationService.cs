@@ -20,7 +20,7 @@ public class RenovationService : IRenovationService
             return Result<List<RenovationShortDto>>.Fail("Error: GetFilteredRenovationByUser: filters passed in were off");
 
         var renovations = _context.Renovations
-            .Include(i=> i.User)
+            .Include(i => i.User)
             .AsNoTracking()
             .OrderByDescending(i => i.TimeStamp);
 
@@ -96,7 +96,7 @@ public class RenovationService : IRenovationService
             BeforeImageList = renovation.BeforeImageList,
             AfterImageList = renovation.AfterImageList,
             Date = renovation.TimeStamp.Date.ToString(),
-            Comments = renovation.Comments.OrderByDescending(i => i.TimeStamp).Select(i => new RenovationCommentDto { CommentText = i.CommentText, SenderName = i.User!.UserName!, Date = i.TimeStamp.Date.ToString()}).ToList(),
+            Comments = renovation.Comments.OrderByDescending(i => i.TimeStamp).Select(i => new RenovationCommentDto { CommentText = i.CommentText, SenderName = i.User!.UserName!, Date = i.TimeStamp.Date.ToString() }).ToList(),
             TotalLikes = renovation.Likes.Count,
             AccessedByOwner = false
         };
@@ -165,5 +165,106 @@ public class RenovationService : IRenovationService
 
         return Result.Ok();
     }
+
+    public async Task<Result> AddComment(int renovationId, string commentText, string userId)
+    {
+        var renovation = await _context.Renovations.FirstOrDefaultAsync(i => i.Id == renovationId);
+
+        if (renovation is null)
+            return Result.Fail("Error: AddComment, Renovation with id does not exits. id:" + renovationId);
+
+        // Maybe also check if user exits
+        // validate text too
+
+        var comment = new Comment
+        {
+            CommentText = commentText,
+            RenovationId = renovationId,
+            UserId = userId,
+            TimeStamp = DateTime.UtcNow
+        };
+
+        await _context.Comments.AddAsync(comment);
+
+        await _context.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
+    public async Task<Result> LikeRenovation(int renovationId, string userId)
+    {
+        // Validation: check if like exits:
+        var likeCheck = await _context.Likes.FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
+        if(likeCheck != null)
+            return Result.Fail("Error: LikeRenovation, Like already exits");
+
+        var renovation = await _context.Renovations.FirstOrDefaultAsync(i => i.Id == renovationId);
+
+        if (renovation is null)
+            return Result.Fail("Error: LikeRenovation, Renovation with id does not exits. id:" + renovationId);
+
+
+        // Maybe also check if user exits
+        // validate text too
+
+        var like = new Like
+        {
+            RenovationId = renovationId,
+            UserId = userId,
+            TimeStamp = DateTime.UtcNow
+        };
+
+        await _context.Likes.AddAsync(like);
+
+        await _context.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
+    public async Task<Result<List<RenovationShortDto>>> GetLikedRenovationsOfUser(string userId)
+    {
+ 
+        var renovations = await _context.Renovations
+            .Include(i => i.User)
+            .AsNoTracking()
+            .OrderByDescending(i => i.TimeStamp)
+            .Where(i => i.Likes.Any(l => l.UserId == userId))
+            .ToListAsync();
+
+
+        List<RenovationShortDto> formatedResult = renovations.Select(
+                    i => new RenovationShortDto
+                    {
+                        Id = i.Id,
+                        Title = i.Title,
+                        Description = i.Description,
+                        OwnerName = i.User!.UserName!,
+                        CatagoryList = i.CatagoryList
+                    }).ToList();
+
+        return Result<List<RenovationShortDto>>.Ok(formatedResult);
+    }
+
+    public async Task<Result> FollowUser(string userId, string followingUserId)
+    {
+        // Validate check if already exits
+        var followingCheck = _context.Follows
+            .AsNoTracking()
+            .FirstOrDefault(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
+        if(followingCheck != null)
+            return Result.Fail("Error: FollowUser, already following");
+
+        var follow = new Follow
+        {
+            FollowerUserId = userId,
+            FollowingUserId = followingUserId,
+            TimeStamp = DateTime.UtcNow
+        };
+        await _context.Follows.AddAsync(follow);
+        await _context.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
 
 }

@@ -18,4 +18,12 @@ public interface IRenovationService
     Task<Result> UpdateRenovation(int id, AddRenovationDto dto);
 
     Task<Result> DeleteRenovation(int id);
+
+    Task<Result> AddComment(int renovationId, string commentText, string userId);
+
+    Task<Result> LikeRenovation(int renovationId, string userId);
+
+    Task<Result<List<RenovationShortDto>>> GetLikedRenovationsOfUser(string userId);
+
+    Task<Result> FollowUser(string userId, string followingUserId);
 }
