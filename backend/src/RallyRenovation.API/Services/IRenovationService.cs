@@ -32,14 +32,13 @@ public interface IRenovationService
     Task<Result> FollowUser(string userId, string followingUserId);
 
     Task<Result> UnFollowUser(string userId, string followingUserId);
+    
+    Task<Result<List<MessageThreadDto>>> GetMessageThreads(string userId);
 
-    /*
-    Task<Result<List<MessageThread>>> GetMessageThreads(string userId);
+    Task<Result<List<MessageDto>>> GetMessagesOfThread(int messageThreadId);
 
-    Task<Result<Message>> GetMessagesOfThread(int messageThreadId);
+    Task<Result> StartMessageThread(string title, string userId, string fromUserid);
 
-    Task<Result> StartMessageThread(string title, string UserId, string FromUserid, string body);
-
-    Task<Result> AddMessageToMessageThread(int messageThreadId, string SenderUserId, string body);
-    */
+    Task<Result> AddMessageToMessageThread(int messageThreadId, string senderUserId, string body);
+    
 }

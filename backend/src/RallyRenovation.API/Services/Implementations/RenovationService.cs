@@ -235,8 +235,6 @@ public class RenovationService : IRenovationService
 
     }
 
-
-
     public async Task<Result<List<RenovationShortDto>>> GetLikedRenovationsOfUser(string userId)
     {
 
@@ -294,5 +292,86 @@ public class RenovationService : IRenovationService
         return Result.Ok();
 
     }
+
+    public async Task<Result<List<MessageThreadDto>>> GetMessageThreads(string userId)
+    {
+        var messageThreads = await _context.MessageThreads
+        .Include(i => i.ToUser)
+        .Include(i => i.FromUser)
+        .AsNoTracking()
+        .Where(i => i.ToUserId == userId)
+        .ToListAsync();
+
+        var formatedResult = messageThreads.Select(i => new MessageThreadDto
+        {
+            ThreadId = i.Id,
+            FromUserName = i.FromUser!.UserName!,
+            Title = i.Title,
+            Date = i.TimeStamp.Date.ToString()
+        }).ToList();
+
+
+        return Result<List<MessageThreadDto>>.Ok(formatedResult);
+    }
+
+    public async Task<Result<List<MessageDto>>> GetMessagesOfThread(int messageThreadId)
+    {
+        var messages = await _context.Messages
+            .Include(i => i.SenderUser)
+            .AsNoTracking()
+            .Where(i => i.Id == messageThreadId)
+            .OrderByDescending(i => i.TimeStamp)
+            .ToListAsync();
+
+        var formatedResult = messages.Select(i => new MessageDto
+        {
+            SenderName = i.SenderUser!.UserName!,
+            Body = i.Body,
+            Date = i.TimeStamp.Date.ToString()
+        }).ToList();
+
+        return Result<List<MessageDto>>.Ok(formatedResult);
+    }
+
+
+    public async Task<Result> StartMessageThread(string title, string userId, string fromUserid)
+    {
+        var messageThread = new MessageThread
+        {
+            Title = title,
+            ToUserId = userId,
+            FromUserId = fromUserid,
+            TimeStamp = DateTime.UtcNow
+        };
+        await _context.MessageThreads.AddAsync(messageThread);
+        await _context.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
+    public async Task<Result> AddMessageToMessageThread(int messageThreadId, string senderUserId, string body)
+    {
+        // Validate: check if messageThread exits
+        var check = await _context.MessageThreads.AnyAsync(i => i.Id == messageThreadId);
+        if(!check)
+            return Result.Fail("Error: AddMessageToMessageThread, RenovationId did not exit");
+
+        // TODO: maybe valideate if user exits
+
+        var message = new Message
+        {
+            Body = body,
+            SenderUserId = senderUserId,
+            MessageThreadId = messageThreadId,
+            TimeStamp = DateTime.UtcNow
+        };
+
+        await _context.Messages.AddAsync(message);
+        await _context.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
+
 
 }
