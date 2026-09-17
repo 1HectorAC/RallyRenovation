@@ -61,7 +61,7 @@ public class RenovationController : ControllerBase
             if (userId == null || userId != result.Value.UserId)
                 return Unauthorized("Error: GetRenovation action method: Renovation is private and the current user does not own it");
         }
-        if(userId != null && userId == result.Value.UserId)
+        if (userId != null && userId == result.Value.UserId)
         {
             result.Value.AccessedByOwner = true;
         }
@@ -106,4 +106,126 @@ public class RenovationController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("comment")]
+    public async Task<IActionResult> AddComment(int renovationId, string commentText)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+
+        var result = await _service.AddComment(renovationId, commentText, userId);
+        if (!result.IsSuccess)
+            return BadRequest(result.Error);
+
+        return Ok();
+    }
+
+    [HttpPost("like")]
+    public async Task<IActionResult> AddLike(int renovationId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error; user id issue");
+
+        var result = await _service.LikeRenovation(renovationId, userId);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Error);
+
+        return Ok();
+    }
+
+    [HttpPost("unlike")]
+    public async Task<IActionResult> RemoveLike(int renovationId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error; user id issue");
+
+        var result = await _service.UnLikeRenovation(renovationId, userId);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Error);
+
+        return Ok();
+    }
+
+    [HttpGet("like")]
+    public async Task<IActionResult> GetLikedRenovations()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+
+        var result = await _service.GetLikedRenovationsOfUser(userId);
+
+        if (!result.IsSuccess)
+            return BadRequest(result.Error);
+
+        return Ok();
+    }
+
+    [HttpPost("follow")]
+    public async Task<IActionResult> AddFollow(string followingUserId)
+    {
+        var userid = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+        var result = await _service.FollowUser(userid, followingUserId);
+
+        if (!result.IsSuccess)
+            return BadRequest();
+        return Ok();
+    }
+
+    [HttpPost("unfollow")]
+    public async Task<IActionResult> RemoveFollow(string followingUserId)
+    {
+        var userid = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+        var result = await _service.UnFollowUser(userid, followingUserId);
+
+        if (!result.IsSuccess)
+            return BadRequest();
+        return Ok();
+    }
+
+    [HttpGet("messageThread")]
+    public async Task<ActionResult<List<MessageThreadDto>>> MessageThreads()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+        var result = await _service.GetMessageThreads(userId);
+        if (!result.IsSuccess)
+            return BadRequest();
+
+        return Ok(result.Value);
+    }
+
+    [HttpPost("messageThread")]
+    public async Task<IActionResult> AddMessageThreads(string title, string fromUserId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+        var result = await _service.StartMessageThread(title, userId, fromUserId);
+
+        if (!result.IsSuccess)
+            return BadRequest();
+
+        return Ok();
+    }
+
+    [HttpGet("messages")]
+    public async Task<ActionResult<List<MessageDto>>> Messages(int messageThreadId)
+    {
+        //Need check if own can access messageThread
+
+        var result = await _service.GetMessagesOfThread(messageThreadId);
+        if (!result.IsSuccess)
+            return BadRequest();
+
+        return Ok(result.Value);
+    }
+    [HttpPost("messages")]
+    public async Task<IActionResult> AddMessage(int messageThreadId, string body)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+
+        var result = await _service.AddMessageToMessageThread(messageThreadId, userId, body);
+        if (!result.IsSuccess)
+            return BadRequest();
+
+        return Ok();
+    }
+
+
+
 }
