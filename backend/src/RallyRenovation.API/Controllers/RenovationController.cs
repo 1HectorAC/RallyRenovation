@@ -108,8 +108,10 @@ public class RenovationController : ControllerBase
     }
 
     [HttpPost("comment")]
-    public async Task<IActionResult> AddComment(int renovationId, string commentText)
+    public async Task<IActionResult> AddComment(int renovationId, [FromBody] string commentText)
     {
+        Console.WriteLine("id: " + renovationId);
+        Console.WriteLine("body: " + commentText);
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
 
         var result = await _service.AddComment(renovationId, commentText, userId);
@@ -133,11 +135,12 @@ public class RenovationController : ControllerBase
     }
 
     [HttpPost("unlike")]
-    public async Task<IActionResult> RemoveLike(int renovationId)
+    public async Task<IActionResult> RemoveLike(int likeId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error; user id issue");
+        //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error; user id issue");
+        // Need to add check if user owns the like
 
-        var result = await _service.UnLikeRenovation(renovationId, userId);
+        var result = await _service.UnLikeRenovation(likeId);
 
         if (!result.IsSuccess)
             return BadRequest(result.Error);
@@ -158,6 +161,18 @@ public class RenovationController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("follow")]
+    public async Task<ActionResult<List<FollowDto>>> GetFollowings()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
+        var result = await _service.GetFollowings(userId);
+
+        if (!result.IsSuccess)
+            return BadRequest();
+        return Ok(result);
+
+    }
+
     [HttpPost("follow")]
     public async Task<IActionResult> AddFollow(string followingUserId)
     {
@@ -170,10 +185,10 @@ public class RenovationController : ControllerBase
     }
 
     [HttpPost("unfollow")]
-    public async Task<IActionResult> RemoveFollow(string followingUserId)
+    public async Task<IActionResult> RemoveFollow(int followId)
     {
         var userid = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
-        var result = await _service.UnFollowUser(userid, followingUserId);
+        var result = await _service.UnFollowUser(followId);
 
         if (!result.IsSuccess)
             return BadRequest();
@@ -215,7 +230,7 @@ public class RenovationController : ControllerBase
         return Ok(result.Value);
     }
     [HttpPost("messages")]
-    public async Task<IActionResult> AddMessage(int messageThreadId, string body)
+    public async Task<IActionResult> AddMessage(int messageThreadId, [FromBody] string body)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
 

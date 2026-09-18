@@ -223,9 +223,10 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
-    public async Task<Result> UnLikeRenovation(int renovationId, string userId)
+    public async Task<Result> UnLikeRenovation(int likeId)
     {
-        var like = await _context.Likes.FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
+        var like = await _context.Likes
+        .FirstOrDefaultAsync(i => i.Id == likeId);
         if (like == null)
             return Result.Fail("Error: UnLikeRenovation, Like does not exits");
 
@@ -259,6 +260,23 @@ public class RenovationService : IRenovationService
         return Result<List<RenovationShortDto>>.Ok(formatedResult);
     }
 
+    public async Task<Result<List<FollowDto>>> GetFollowings(string userId)
+    {
+        var followings = await _context.Follows
+            .AsNoTracking()
+            .Include(i => i.FollowingUser)
+            .Where(i => i.FollowerUserId == userId).ToListAsync();
+
+        var formatedResult = followings.Select(i => new FollowDto
+        {
+            Id = i.Id,
+            FollowingUserName = i.FollowerUser!.UserName!
+        }).ToList();
+
+        return Result<List<FollowDto>>.Ok(formatedResult);
+
+    }
+
     public async Task<Result> FollowUser(string userId, string followingUserId)
     {
         // Validate check if already exits
@@ -280,12 +298,12 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
-    public async Task<Result> UnFollowUser(string userId, string followingUserId)
+    public async Task<Result> UnFollowUser(int followId)
     {
         var following = _context.Follows
-            .FirstOrDefault(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
+            .FirstOrDefault(i => i.Id == followId);
         if (following == null)
-            return Result.Fail("Error: FollowUser, already following");
+            return Result.Fail("Error: Following does not exits");
 
         _context.Follows.Remove(following);
         await _context.SaveChangesAsync();
