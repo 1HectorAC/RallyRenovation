@@ -207,10 +207,10 @@ public class RenovationController : ControllerBase
     }
 
     [HttpPost("messageThread")]
-    public async Task<IActionResult> AddMessageThreads(string title, string fromUserId)
+    public async Task<IActionResult> AddMessageThreads(string title, string fromUserId, [FromBody] string body)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Error: user id issue");
-        var result = await _service.StartMessageThread(title, userId, fromUserId);
+        var result = await _service.StartMessageThreadWithMessage(title, userId, fromUserId, body);
 
         if (!result.IsSuccess)
             return BadRequest();

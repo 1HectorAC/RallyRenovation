@@ -367,6 +367,33 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
+    public async Task<Result> StartMessageThreadWithMessage(string title, string userId, string fromUserid, string body)
+    {
+        var currentTimeStamp = DateTime.UtcNow;
+        
+        var message = new Message
+        {
+            Body = body,
+            SenderUserId = fromUserid,
+            TimeStamp = currentTimeStamp
+
+        };
+        var messageThread = new MessageThread
+        {
+            Title = title,
+            ToUserId = userId,
+            FromUserId = fromUserid,
+            TimeStamp = currentTimeStamp,
+            Messages = {message}
+            
+        };
+        await _context.MessageThreads.AddAsync(messageThread);
+        await _context.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
+
     public async Task<Result> AddMessageToMessageThread(int messageThreadId, string senderUserId, string body)
     {
         // Validate: check if messageThread exits
