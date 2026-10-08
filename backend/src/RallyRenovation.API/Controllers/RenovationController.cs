@@ -241,6 +241,19 @@ public class RenovationController : ControllerBase
         return Ok();
     }
 
+    [HttpPost("message/read")]
+    public async Task<IActionResult> MessageRead(int messageId)
+    {
+        // Maybe add user check
+        
+        var result = await _service.MessageRead(messageId);
+
+        if(!result.IsSuccess)
+            return BadRequest(result.Error);
+        
+        return Ok();
+    }
+
 
 
 }

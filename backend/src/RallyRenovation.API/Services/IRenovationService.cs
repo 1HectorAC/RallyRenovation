@@ -45,4 +45,5 @@ public interface IRenovationService
 
     Task<Result> AddMessageToMessageThread(int messageThreadId, string senderUserId, string body);
     
+    Task<Result> MessageRead(int id);
 }

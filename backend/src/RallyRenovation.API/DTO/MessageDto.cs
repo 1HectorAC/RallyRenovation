@@ -8,4 +8,6 @@ public class MessageDto
     public required string Body {get; set;}
 
     public required string Date {get; set;}
+
+    public required bool IsRead {get; set;}
 }

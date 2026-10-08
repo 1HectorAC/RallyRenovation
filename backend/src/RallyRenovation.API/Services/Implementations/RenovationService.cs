@@ -345,7 +345,8 @@ public class RenovationService : IRenovationService
         {
             SenderName = i.SenderUser!.UserName!,
             Body = i.Body,
-            Date = i.TimeStamp.Date.ToString()
+            Date = i.TimeStamp.Date.ToString(),
+            IsRead = i.ReadAt != null
         }).ToList();
 
         return Result<List<MessageDto>>.Ok(formatedResult);
@@ -370,7 +371,7 @@ public class RenovationService : IRenovationService
     public async Task<Result> StartMessageThreadWithMessage(string title, string userId, string fromUserid, string body)
     {
         var currentTimeStamp = DateTime.UtcNow;
-        
+
         var message = new Message
         {
             Body = body,
@@ -416,6 +417,21 @@ public class RenovationService : IRenovationService
 
         return Result.Ok();
     }
+
+    public async Task<Result> MessageRead(int id)
+    {
+        var message = await _context.Messages.FirstOrDefaultAsync(i => i.Id == id);
+        if(message is null)
+            return Result.Fail("Error: message does not exits");
+
+        if(message.ReadAt == null)
+        {
+            message.ReadAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+        return Result.Ok();
+    }
+
 
 
 

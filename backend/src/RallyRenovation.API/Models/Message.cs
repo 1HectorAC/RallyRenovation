@@ -23,4 +23,6 @@ public class Message
 
     [Required]
     public DateTime TimeStamp {get; set;}
+
+    public DateTime? ReadAt {get; set;} = null;
 }
