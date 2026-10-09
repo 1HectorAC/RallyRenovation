@@ -21,7 +21,7 @@ public class RenovationController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("public")]
-    public async Task<ActionResult<List<Renovation>>> GetPublicRenovations(int page = 1, int pageSize = 10)
+    public async Task<ActionResult<List<RenovationShortDto>>> GetPublicRenovations(int page = 1, int pageSize = 10)
     {
         var result = await _service.GetPublicFilteredRenovations(page, pageSize);
 
@@ -32,7 +32,7 @@ public class RenovationController : ControllerBase
     }
 
     [HttpGet("byUser")]
-    public async Task<ActionResult<List<Renovation>>> GetRenovations(int page = 1, int pageSize = 10)
+    public async Task<ActionResult<List<RenovationShortDto>>> GetRenovations(int page = 1, int pageSize = 10)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("UserId of logged in user did not exits.");
 
