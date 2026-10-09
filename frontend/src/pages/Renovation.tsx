@@ -62,9 +62,10 @@ function Renovation() {
             {renovation && (
                 <div>
                     <p>Title: {renovation.title}</p>
-                    <p>By: {renovation.userId}</p>
+                    <p>By: {renovation.ownerName} | {renovation.userId}</p>
                     <p>Description: {renovation.description}</p>
-                    <p>Posted: {renovation.timeStamp}</p>
+                    <p>IsPrivate: {renovation.isPrivate ? "true":"false"}</p>
+                    <p>Date: {renovation.date}</p>
                     <p>catagories: {renovation.catagoryList}</p>
                     <p>Cost: {renovation.cost?.toString() ?? ""}</p>
                     <p>Total Days:{renovation.totalDays?.toString() ?? ""}</p>
@@ -72,6 +73,9 @@ function Renovation() {
                     <p>Location: {renovation.location}</p>
                     <p>Before Images:{renovation.beforeImageList}</p>
                     <p>After Images:{renovation.afterImageList}</p>
+                    <p>TotalLIkes: {renovation.totalLikes.toString()} </p>
+                    <p>AccessedByOwner: {renovation.accessedByOwner ? "true":"false"}</p>
+                    
                 </div>
             )}
 

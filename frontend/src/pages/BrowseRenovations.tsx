@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { RenovationService, type renovationType } from "../services/RenovationService";
+import { RenovationService, type renovationShortType } from "../services/RenovationService";
+import { Link } from "react-router-dom";
 
 function BrowseRenovation() {
-    const [renovations, setRenovations] = useState<renovationType[]>([]);
+    const [renovations, setRenovations] = useState<renovationShortType[]>([]);
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     useEffect(() => {
         const fetchRenovations = async () => {
             try {
-                const data: renovationType[] = await RenovationService.getAll();
+                const data: renovationShortType[] = await RenovationService.getAll();
                 setRenovations(data);
             } catch (err) {
                 if (err instanceof Error)
@@ -22,18 +23,22 @@ function BrowseRenovation() {
     return (
         <div>
             <h1>Browse Renovations</h1>
-            <hr/>
+            <hr />
             {error && <p>{error}</p>}
             {isLoading && <p>Loading...</p>}
             <div>
 
                 {renovations.map((i, x) => (
                     <div key={x}>
-                        <p>id: {i.id.toString()}</p>
-                        <p>Title: {i.title}</p>
-                        <p>Desc: {i.description}</p>
-                        <p>IsPrivate: {i.isPrivate ? "true" : "false"}</p>
-                        <hr/>
+                        <Link to={`/Renovation/${i.id}`}>
+                            <p>id: {i.id.toString()}</p>
+                            <p>Title: {i.title}</p>
+                            <p>Desc: {i.description}</p>
+                            <p>OwnerName: {i.ownerName}</p>
+                            <p>Catagory: {i.catagoryList}</p>
+                        </Link>
+
+                        <hr />
                     </div>
 
                 ))}

@@ -1,9 +1,15 @@
 
 const API_URL = import.meta.env.VITE_API_URL + "/api/renovations";
 
+interface RenovationCommentType {
+    commentText: string;
+    senderName: string;
+    date: string;
+}
 export interface renovationType {
     id: Number;
     userId: string | null;
+    ownerName: string;
     title: string;
     description: string;
     isPrivate: boolean;
@@ -14,7 +20,19 @@ export interface renovationType {
     location: string | null;
     beforeImageList: string | null;
     afterImageList: string | null;
-    timeStamp: string | null;
+    date: string | null;
+    totalLikes: Number;
+    accessedByOwner: boolean;
+    comments: RenovationCommentType[];
+}
+
+
+export interface renovationShortType {
+    id: Number;
+    title: string;
+    description: string;
+    ownerName: string;
+    catagoryList: string | null;
 }
 
 interface addRenovationDtoType {
@@ -31,12 +49,12 @@ interface addRenovationDtoType {
 }
 
 export const RenovationService = {
-    getAll: async (): Promise<renovationType[]> => {
+    getAll: async (): Promise<renovationShortType[]> => {
         console.log("RenovationService: getAll called")
         const res = await fetch(API_URL + "/public");
         if (!res.ok)
             throw new Error("API call failed");
-        const data: renovationType[] = await res.json();
+        const data: renovationShortType[] = await res.json();
         return data;
     },
 
@@ -48,7 +66,7 @@ export const RenovationService = {
         });
         if (!res.ok)
             throw new Error("API call failed");
-        const data: renovationType[] = await res.json();
+        const data: renovationShortType[] = await res.json();
         return data;
     },
 

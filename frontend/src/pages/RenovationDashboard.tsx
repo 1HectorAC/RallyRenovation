@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { RenovationService, type renovationType } from "../services/RenovationService";
+import { RenovationService, type renovationShortType } from "../services/RenovationService";
 import { useAuth } from "../hooks/useAuth";
 
 function RenovationDashboard() {
-    const [renovations, setRenovations] = useState<renovationType[]>([]);
+    const [renovations, setRenovations] = useState<renovationShortType[]>([]);
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -12,11 +12,11 @@ function RenovationDashboard() {
     useEffect(() => {
         const fetchRenovations = async () => {
             try {
-                if (user == null){
+                if (user == null) {
                     throw Error("Error with Authentication check");
 
                 }
-                const data: renovationType[] = await RenovationService.getAllByUser(user?.token);
+                const data: renovationShortType[] = await RenovationService.getAllByUser(user?.token);
                 setRenovations(data);
             } catch (err) {
                 if (err instanceof Error)
@@ -39,15 +39,20 @@ function RenovationDashboard() {
                 {error && <p className="error">{error}</p>}
                 {isLoading && <p>Loading...</p>}
                 {renovations.map((i, x) => (
-                    <Link to={`/Renovation/${i.id}`} key={x}>
-                    <div>
-                        <p>Title: {i.title}</p>
-                        <p>By: {i.userId}</p>
-                        <p>Catagories: {i.catagoryList}</p>
-                        <p>Desc: {i.description}</p>
+                    <div key={x}>
+                        <Link to={`/Renovation/${i.id}`}>
+                            <div>
+                                <p>Id: {i.id.toString()}</p>
+                                <p>Title: {i.title}</p>
+                                <p>By: {i.ownerName}</p>
+                                <p>Catagories: {i.catagoryList}</p>
+                                <p>Desc: {i.description}</p>
+                            </div>
+                        </Link>
+                        <hr />
                     </div>
-                    </Link>
-                    
+
+
                 ))}
             </div>
         </div>
