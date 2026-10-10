@@ -39,4 +39,8 @@ public class RenovationLongDto
     public int TotalLikes {get; set;}
 
     public bool AccessedByOwner {get; set;}
+
+    public bool IsLiked {get; set;} = false;
+
+    public bool IsFollowingOwner {get; set;} = false;
 }

@@ -190,6 +190,12 @@ public class RenovationService : IRenovationService
 
         return Result.Ok();
     }
+    public async Task<bool> LikeCheck(int renovationId, userId){
+        var likeCheck = await _context.Likes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
+        return likeCheck != null;
+    }
 
     public async Task<Result> LikeRenovation(int renovationId, string userId)
     {
@@ -258,6 +264,13 @@ public class RenovationService : IRenovationService
                     }).ToList();
 
         return Result<List<RenovationShortDto>>.Ok(formatedResult);
+    }
+
+    public async Task<bool> FollowCheck(userId, followingUserId){
+        var followingCheck = await _context.Follow
+            .AsNoTracking()
+            .FirstOrDefaultAsync(i => i.FollowerUserId == userId && i.FollowingUserId == followinguserId);
+        return followingCheck != null;
     }
 
     public async Task<Result<List<FollowDto>>> GetFollowings(string userId)

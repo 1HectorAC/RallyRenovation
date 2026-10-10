@@ -61,9 +61,14 @@ public class RenovationController : ControllerBase
             if (userId == null || userId != result.Value.UserId)
                 return Unauthorized("Error: GetRenovation action method: Renovation is private and the current user does not own it");
         }
-        if (userId != null && userId == result.Value.UserId)
+        if (userId != null)
         {
-            result.Value.AccessedByOwner = true;
+            if(userId == result.Value.UserId)
+                result.Value.AccessedByOwner = true;
+            else{
+                result.Value.IsLiked = await _service.LikeCheck(id, userId);
+                result.Value.IsFollowingOwner = await _service.FollowCheck(userId, result.Value.UserId)
+            }
         }
 
 
