@@ -23,6 +23,8 @@ export interface renovationType {
     date: string | null;
     totalLikes: Number;
     accessedByOwner: boolean;
+    isLiked: boolean;
+    isFollowingOnwer: boolean;
     comments: RenovationCommentType[];
 }
 

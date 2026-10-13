@@ -50,10 +50,29 @@ function Renovation() {
 
             {isAuthenticated &&
                 <div>
-                    <Link to={`/RenovationEdit/${id}`}><button>Edit</button></Link>
-                    <button onClick={onClickDelete}>Delete</button>
+                    {renovation?.accessedByOwner ?
+                        <span>
+                            <Link to={`/RenovationEdit/${id}`}><button>Edit</button></Link>
+                            <button onClick={onClickDelete}>Delete</button>
+                        </span>
+                        :
+                        <span>
+                            {renovation?.isLiked ?
+                                <span>Unlike</span> :
+                                <span>Like</span>
+                            }
+                            
+                            {renovation?.isFollowingOnwer ?
+                                <span>UnFollowing</span> :
+                                <span>Follow</span>
+                            }
+                            
+                        </span>
+                    }
+
                 </div>
             }
+
 
             <p>id: {id} </p>
             {error && <p className="error">{error}</p>}
@@ -64,7 +83,7 @@ function Renovation() {
                     <p>Title: {renovation.title}</p>
                     <p>By: {renovation.ownerName} | {renovation.userId}</p>
                     <p>Description: {renovation.description}</p>
-                    <p>IsPrivate: {renovation.isPrivate ? "true":"false"}</p>
+                    <p>IsPrivate: {renovation.isPrivate ? "true" : "false"}</p>
                     <p>Date: {renovation.date}</p>
                     <p>catagories: {renovation.catagoryList}</p>
                     <p>Cost: {renovation.cost?.toString() ?? ""}</p>
@@ -74,8 +93,8 @@ function Renovation() {
                     <p>Before Images:{renovation.beforeImageList}</p>
                     <p>After Images:{renovation.afterImageList}</p>
                     <p>TotalLIkes: {renovation.totalLikes.toString()} </p>
-                    <p>AccessedByOwner: {renovation.accessedByOwner ? "true":"false"}</p>
-                    
+                    <p>AccessedByOwner: {renovation.accessedByOwner ? "true" : "false"}</p>
+
                 </div>
             )}
 
