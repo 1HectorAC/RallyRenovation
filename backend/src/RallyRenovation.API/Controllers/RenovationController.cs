@@ -67,7 +67,7 @@ public class RenovationController : ControllerBase
                 result.Value.AccessedByOwner = true;
             else{
                 result.Value.IsLiked = await _service.LikeCheck(id, userId);
-                result.Value.IsFollowingOwner = await _service.FollowCheck(userId, result.Value.UserId)
+                result.Value.IsFollowingOwner = await _service.FollowCheck(userId, result.Value.UserId);
             }
         }
 

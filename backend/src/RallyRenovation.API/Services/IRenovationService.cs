@@ -23,11 +23,15 @@ public interface IRenovationService
 
     Task<Result> AddComment(int renovationId, string commentText, string userId);
 
+    Task<bool> LikeCheck(int renovationId, string userId);
+
     Task<Result> LikeRenovation(int renovationId, string userId);
 
     Task<Result> UnLikeRenovation(int likeId);
 
     Task<Result<List<RenovationShortDto>>> GetLikedRenovationsOfUser(string userId);
+
+    Task<bool> FollowCheck(string userId, string followingUserId);
 
     Task<Result<List<FollowDto>>> GetFollowings(string userId);
 
