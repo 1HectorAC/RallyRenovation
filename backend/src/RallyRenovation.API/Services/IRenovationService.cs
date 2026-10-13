@@ -27,7 +27,7 @@ public interface IRenovationService
 
     Task<Result> LikeRenovation(int renovationId, string userId);
 
-    Task<Result> UnLikeRenovation(int likeId);
+    Task<Result> UnLikeRenovation(int renovationId, string userId);
 
     Task<Result<List<RenovationShortDto>>> GetLikedRenovationsOfUser(string userId);
 
@@ -37,7 +37,7 @@ public interface IRenovationService
 
     Task<Result> FollowUser(string userId, string followingUserId);
 
-    Task<Result> UnFollowUser(int followId);
+    Task<Result> UnFollowUser(string userId, string followingUserId);
     
     Task<Result<List<MessageThreadDto>>> GetMessageThreads(string userId);
 

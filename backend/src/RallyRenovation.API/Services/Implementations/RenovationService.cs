@@ -229,12 +229,12 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
-    public async Task<Result> UnLikeRenovation(int likeId)
+    public async Task<Result> UnLikeRenovation(int renovationId, string userId)
     {
         var like = await _context.Likes
-        .FirstOrDefaultAsync(i => i.Id == likeId);
+        .FirstOrDefaultAsync(i => i.RenovationId == renovationId && i.UserId == userId);
         if (like == null)
-            return Result.Fail("Error: UnLikeRenovation, Like does not exits");
+            return Result.Fail("Error: UnLikeRenovation, Like does not exists");
 
         _context.Likes.Remove(like);
         await _context.SaveChangesAsync();
@@ -293,9 +293,9 @@ public class RenovationService : IRenovationService
     public async Task<Result> FollowUser(string userId, string followingUserId)
     {
         // Validate check if already exits
-        var followingCheck = _context.Follows
+        var followingCheck = await _context.Follows
             .AsNoTracking()
-            .FirstOrDefault(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
+            .FirstOrDefaultAsync(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
         if (followingCheck != null)
             return Result.Fail("Error: FollowUser, already following");
 
@@ -311,17 +311,17 @@ public class RenovationService : IRenovationService
         return Result.Ok();
     }
 
-    public async Task<Result> UnFollowUser(int followId)
+    public async Task<Result> UnFollowUser(string userId, string followingUserId)
     {
-        var following = _context.Follows
-            .FirstOrDefault(i => i.Id == followId);
+        var following = await _context.Follows
+            .FirstOrDefaultAsync(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
+        
         if (following == null)
-            return Result.Fail("Error: Following does not exits");
+            return Result.Fail("Error: UnFollowUser, Following does not exits");
 
         _context.Follows.Remove(following);
         await _context.SaveChangesAsync();
         return Result.Ok();
-
     }
 
     public async Task<Result<List<MessageThreadDto>>> GetMessageThreads(string userId)
