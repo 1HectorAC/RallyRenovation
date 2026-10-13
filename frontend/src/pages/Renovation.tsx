@@ -52,21 +52,21 @@ function Renovation() {
                 <div>
                     {renovation?.accessedByOwner ?
                         <span>
-                            <Link to={`/RenovationEdit/${id}`}><button>Edit</button></Link>
-                            <button onClick={onClickDelete}>Delete</button>
+                            <Link to={`/RenovationEdit/${id}`}><button className="btn btn-primary">Edit</button></Link>
+                            <button onClick={onClickDelete} className="btn btn-primary">Delete</button>
                         </span>
                         :
                         <span>
                             {renovation?.isLiked ?
-                                <span>Unlike</span> :
-                                <span>Like</span>
+                                <button className="button1">Unlike</button> :
+                                <button className="btn btn-primary">Like</button>
                             }
-                            
+
                             {renovation?.isFollowingOnwer ?
-                                <span>UnFollowing</span> :
-                                <span>Follow</span>
+                                <button className="button1">UnFollowing</button> :
+                                <button className="btn btn-primary">Follow</button>
                             }
-                            
+
                         </span>
                     }
 
