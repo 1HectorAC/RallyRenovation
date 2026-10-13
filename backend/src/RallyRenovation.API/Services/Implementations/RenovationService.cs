@@ -267,9 +267,9 @@ public class RenovationService : IRenovationService
     }
 
     public async Task<bool> FollowCheck(string userId, string followingUserId){
-        var followingCheck = await _context.Follow
+        var followingCheck = await _context.Follows
             .AsNoTracking()
-            .FirstOrDefaultAsync(i => i.FollowerUserId == userId && i.FollowingUserId == followinguserId);
+            .FirstOrDefaultAsync(i => i.FollowerUserId == userId && i.FollowingUserId == followingUserId);
         return followingCheck != null;
     }
 
