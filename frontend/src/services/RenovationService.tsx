@@ -152,6 +152,28 @@ export const RenovationService = {
         });
         if (!res.ok)
             throw Error("API call failed");
+    },
+    follow: async (token: string, followingUserId: string) => {
+        const res = await fetch(API_URL + `/follow/${followingUserId}`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        if(!res.ok)
+            return Error("API call failed");
+    },
+    unfollow: async (token: string, followingUserId: string) => {
+        const res = await fetch(API_URL + `/unfollow/${followingUserId}`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        if(!res.ok)
+            return Error("API call failed");
     }
 
 }

@@ -58,6 +58,28 @@ function Renovation() {
                 setError(err.message);
         }
     };
+    async function onFollow(){
+        try{
+            if(!user || !renovation || renovation.userId == null)
+                throw Error();
+            await RenovationService.follow(user?.token, renovation?.userId);
+            setIsFollowingOwner(true);
+        } catch(err){
+            if(err instanceof Error)
+                setError(err.message);
+        }
+    };
+    async function onUnfollow(){
+        try{
+            if(!user || !renovation || renovation.userId == null)
+                throw Error();
+            await RenovationService.unfollow(user?.token, renovation?.userId);
+            setIsFollowingOwner(false);
+        } catch(err){
+            if(err instanceof Error)
+                setError(err.message);
+        }
+    };
 
     useEffect(() => {
         const fetchRenovation = async () => {
@@ -95,8 +117,8 @@ function Renovation() {
                             }
 
                             {isFollowingOnwer ?
-                                <button className="btn btn-primary">UnFollowing</button> :
-                                <button className="btn btn-primary">Follow</button>
+                                <button className="btn btn-primary" onClick={onUnfollow}>UnFollowing</button> :
+                                <button className="btn btn-primary" onClick={onFollow}>Follow</button>
                             }
 
                         </span>
