@@ -117,10 +117,34 @@ export const RenovationService = {
     },
 
     delete: async (token: string, id: Number) => {
-                console.log("RenovationService: delete called")
+        console.log("RenovationService: delete called")
 
         const res = await fetch(API_URL + `/${id}`, {
             method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        if (!res.ok)
+            throw Error("API call failed");
+    },
+
+    like: async (token: string, renovationId: Number) => {
+        const res = await fetch(API_URL + `/like/${renovationId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        if (!res.ok)
+            throw Error("API call failed");
+    },
+    
+    unlike: async (token: string, renovationId: Number) => {
+        const res = await fetch(API_URL + `/unlike/${renovationId}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`

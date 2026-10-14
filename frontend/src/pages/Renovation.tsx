@@ -8,6 +8,8 @@ import { useAuth } from "../hooks/useAuth";
 function Renovation() {
     const { id } = useParams();
     const [renovation, setRenovation] = useState<renovationType | null>();
+    const [isLiked, setIsLiked] = useState<boolean>(false);
+    const [isFollowingOnwer, setIsFollowingOwner] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const { user, isAuthenticated } = useAuth();
@@ -27,7 +29,35 @@ function Renovation() {
             if (err instanceof Error)
                 setError(err.message);
         }
-    }
+    };
+
+    async function onLike(){
+        try{
+            if(!user || !renovation)
+                throw Error();
+            await RenovationService.like(user?.token,Number(renovation?.id));
+
+            setIsLiked(true);
+
+        } catch(err){
+            if(err instanceof Error)
+                setError(err.message);
+        }
+    };
+
+    async function onUnlike(){
+        try{
+            if(!user || !renovation)
+                throw Error();
+            await RenovationService.unlike(user?.token,Number(renovation?.id));
+
+            setIsLiked(false);
+
+        } catch(err){
+            if(err instanceof Error)
+                setError(err.message);
+        }
+    };
 
     useEffect(() => {
         const fetchRenovation = async () => {
@@ -35,6 +65,8 @@ function Renovation() {
                 const token = user?.token ?? null;
                 const data: renovationType = await RenovationService.get(token, Number(id));
                 setRenovation(data);
+                setIsLiked(data.isLiked);
+                setIsFollowingOwner(data.isFollowingOnwer);
             } catch (err) {
                 if (err instanceof Error)
                     setError(err.message);
@@ -57,13 +89,13 @@ function Renovation() {
                         </span>
                         :
                         <span>
-                            {renovation?.isLiked ?
-                                <button className="button1">Unlike</button> :
-                                <button className="btn btn-primary">Like</button>
+                            {isLiked ?
+                                <button className="btn btn-primary" onClick={onUnlike}>Unlike</button> :
+                                <button className="btn btn-primary" onClick={onLike}>Like</button>
                             }
 
-                            {renovation?.isFollowingOnwer ?
-                                <button className="button1">UnFollowing</button> :
+                            {isFollowingOnwer ?
+                                <button className="btn btn-primary">UnFollowing</button> :
                                 <button className="btn btn-primary">Follow</button>
                             }
 
