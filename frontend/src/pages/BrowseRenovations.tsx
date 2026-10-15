@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RenovationService, type renovationShortType } from "../services/RenovationService";
-import { Link } from "react-router-dom";
+import RenovationCard from "../context/RenovationCard";
 
 function BrowseRenovation() {
     const [renovations, setRenovations] = useState<renovationShortType[]>([]);
@@ -27,20 +27,16 @@ function BrowseRenovation() {
             {error && <p>{error}</p>}
             {isLoading && <p>Loading...</p>}
             <div>
-
                 {renovations.map((i, x) => (
-                    <div key={x}>
-                        <Link to={`/Renovation/${i.id}`}>
-                            <p>id: {i.id.toString()}</p>
-                            <p>Title: {i.title}</p>
-                            <p>Desc: {i.description}</p>
-                            <p>OwnerName: {i.ownerName}</p>
-                            <p>Catagory: {i.catagoryList}</p>
-                        </Link>
-
-                        <hr />
-                    </div>
-
+                    <RenovationCard
+                        key={x}
+                        id={i.id}
+                        title={i.title}
+                        description={i.description}
+                        ownerName={i.ownerName}
+                        catagoryList={i.catagoryList}
+                        url={`/Renovation/${i.id}`}
+                    />
                 ))}
             </div>
         </div>
