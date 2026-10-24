@@ -1,7 +1,47 @@
+:root {
+    --main-back: rgb(220, 208, 183);
+    --main-green:rgb(38, 74, 38);
+}
 
 .shortRenovationCard{
     background-color:rgb(223, 222, 231);
     margin: 5px;
     padding: 10px;
     border-radius: 5px;
+}
+.heroSection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-back);
+}
+.heroTextSection{
+    width: 55%;
+    text-align: center;
+}
+.heroImageSection{
+    width: 44%;
+}
+.heroImage{
+    
+}
+.heroButton{
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: var(--main-green);
+    color:white;
+
+}
+
+.buttonStyle2{
+    background-color: white;
+    color:var(--main-green);
+    border-color: var(--main-green);
+    border-radius: 5px;
+    padding: 5px;
+}
+.recentPostSection{
+    text-align: center;
+    padding: 20px;
 }
