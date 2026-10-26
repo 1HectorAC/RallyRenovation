@@ -31,52 +31,52 @@ function Renovation() {
         }
     };
 
-    async function onLike(){
-        try{
-            if(!user || !renovation)
+    async function onLike() {
+        try {
+            if (!user || !renovation)
                 throw Error();
-            await RenovationService.like(user?.token,Number(renovation?.id));
+            await RenovationService.like(user?.token, Number(renovation?.id));
 
             setIsLiked(true);
 
-        } catch(err){
-            if(err instanceof Error)
+        } catch (err) {
+            if (err instanceof Error)
                 setError(err.message);
         }
     };
 
-    async function onUnlike(){
-        try{
-            if(!user || !renovation)
+    async function onUnlike() {
+        try {
+            if (!user || !renovation)
                 throw Error();
-            await RenovationService.unlike(user?.token,Number(renovation?.id));
+            await RenovationService.unlike(user?.token, Number(renovation?.id));
 
             setIsLiked(false);
 
-        } catch(err){
-            if(err instanceof Error)
+        } catch (err) {
+            if (err instanceof Error)
                 setError(err.message);
         }
     };
-    async function onFollow(){
-        try{
-            if(!user || !renovation || renovation.userId == null)
+    async function onFollow() {
+        try {
+            if (!user || !renovation || renovation.userId == null)
                 throw Error();
             await RenovationService.follow(user?.token, renovation?.userId);
             setIsFollowingOwner(true);
-        } catch(err){
-            if(err instanceof Error)
+        } catch (err) {
+            if (err instanceof Error)
                 setError(err.message);
         }
     };
-    async function onUnfollow(){
-        try{
-            if(!user || !renovation || renovation.userId == null)
+    async function onUnfollow() {
+        try {
+            if (!user || !renovation || renovation.userId == null)
                 throw Error();
             await RenovationService.unfollow(user?.token, renovation?.userId);
             setIsFollowingOwner(false);
-        } catch(err){
-            if(err instanceof Error)
+        } catch (err) {
+            if (err instanceof Error)
                 setError(err.message);
         }
     };
@@ -100,44 +100,45 @@ function Renovation() {
     }, [])
     return (
         <div>
-            <h1>Renovation</h1>
-
-            {isAuthenticated &&
+            <div className="headerSection">
+                <h1>Renovation</h1>
+                <p>{renovation?.totalLikes.toString()} Likes</p>
                 <div>
-                    {renovation?.accessedByOwner ?
-                        <span>
-                            <Link to={`/RenovationEdit/${id}`}><button className="btn btn-primary">Edit</button></Link>
-                            <button onClick={onClickDelete} className="btn btn-primary">Delete</button>
-                        </span>
-                        :
-                        <span>
-                            {isLiked ?
-                                <button className="btn btn-primary" onClick={onUnlike}>Unlike</button> :
-                                <button className="btn btn-primary" onClick={onLike}>Like</button>
+                    <p>{renovation?.isPrivate ? "private" : "public"}</p>
+                    {isAuthenticated &&
+                        <div>
+                            {renovation?.accessedByOwner ?
+                                <span>
+                                    <Link to={`/RenovationEdit/${id}`}><button className="btn btn-primary">Edit</button></Link>
+                                    <button onClick={onClickDelete} className="btn btn-primary">Delete</button>
+                                </span>
+                                :
+                                <span>
+                                    {isLiked ?
+                                        <button className="btn btn-primary" onClick={onUnlike}>Unlike</button> :
+                                        <button className="btn btn-primary" onClick={onLike}>Like</button>
+                                    }
+
+                                    {isFollowingOnwer ?
+                                        <button className="btn btn-primary" onClick={onUnfollow}>UnFollowing</button> :
+                                        <button className="btn btn-primary" onClick={onFollow}>Follow</button>
+                                    }
+
+                                </span>
                             }
 
-                            {isFollowingOnwer ?
-                                <button className="btn btn-primary" onClick={onUnfollow}>UnFollowing</button> :
-                                <button className="btn btn-primary" onClick={onFollow}>Follow</button>
-                            }
-
-                        </span>
+                        </div>
                     }
-
                 </div>
-            }
-
-
-            <p>id: {id} </p>
+            </div>
             {error && <p className="error">{error}</p>}
             {isLoading && <p>Loading...</p>}
 
             {renovation && (
                 <div>
                     <p>Title: {renovation.title}</p>
-                    <p>By: {renovation.ownerName} | {renovation.userId}</p>
+                    <p>By: {renovation.ownerName}</p>
                     <p>Description: {renovation.description}</p>
-                    <p>IsPrivate: {renovation.isPrivate ? "true" : "false"}</p>
                     <p>Date: {renovation.date}</p>
                     <p>catagories: {renovation.catagoryList}</p>
                     <p>Cost: {renovation.cost?.toString() ?? ""}</p>
@@ -146,12 +147,9 @@ function Renovation() {
                     <p>Location: {renovation.location}</p>
                     <p>Before Images:{renovation.beforeImageList}</p>
                     <p>After Images:{renovation.afterImageList}</p>
-                    <p>TotalLIkes: {renovation.totalLikes.toString()} </p>
                     <p>AccessedByOwner: {renovation.accessedByOwner ? "true" : "false"}</p>
-
                 </div>
             )}
-
         </div>
     )
 }

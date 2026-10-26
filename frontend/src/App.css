@@ -90,3 +90,7 @@
     color:rgb(104, 104, 104);
     font-size: 14px;
 }
+
+.headerSection{
+    background-color: var(--main-back);
+}
