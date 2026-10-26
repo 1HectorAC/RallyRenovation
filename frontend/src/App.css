@@ -22,26 +22,55 @@
 .heroImageSection{
     width: 44%;
 }
+/*
 .heroImage{
     
-}
+}*/
 .heroButton{
-    width: 120px;
-    height: 40px;
+    
     border-radius: 5px;
     background-color: var(--main-green);
     color:white;
+    padding: 10px;
+    font-size: 21px;
+    border: var(--main-green);
 
+}
+.buttonStyle1{
+    background-color: var(--main-green);
+    color: white;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 18px;
+    border: var(--main-green);
 }
 
 .buttonStyle2{
     background-color: white;
     color:var(--main-green);
-    border-color: var(--main-green);
+    border: solid 2px var(--main-green);
     border-radius: 5px;
     padding: 5px;
+    font-size: 18px;
 }
 .recentPostSection{
     text-align: center;
     padding: 20px;
+}
+.centerContainer{
+    display: flex;
+    justify-content: center;
+    background-color: var(--main-back);
+}
+.card1{
+    background-color: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    padding: 30px;
+    width: 30%;
+}
+
+.error{
+    color:red;
 }

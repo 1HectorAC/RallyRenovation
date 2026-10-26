@@ -12,7 +12,7 @@ function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    async function onSubmit(e:React.ChangeEvent) {
+    async function onSubmit(e: React.ChangeEvent) {
         e.preventDefault();
         if (email == "" || password == "") {
             setError("All fields must be entered");
@@ -33,17 +33,28 @@ function Login() {
     };
 
     return (
-        <div>
-            <h1>Login Page</h1>
-            <form onSubmit={onSubmit}>
-                <label htmlFor="email">Email</label>
-                <input name="email" type="text" onChange={i => setEmail(i.target.value)} />
-                <label htmlFor="password">Password</label>
-                <input name="password" type="text" onChange={i => setPassword(i.target.value)} />
-                {error && <span className="error">{error}</span>}
-                {isLoading && <span>Loading...</span>}
-                <button type="submit">Enter</button>
-            </form>
+        <div className="centerContainer">
+            <div className="card1">
+                <h1>Login Page</h1>
+                <form onSubmit={onSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input className="form-control" name="email" type="text" onChange={i => setEmail(i.target.value)} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input className="form-control" name="password" type="text" onChange={i => setPassword(i.target.value)} />
+                    </div>
+
+                    {error && <span className="error">{error}</span>}
+                    {isLoading && <span>Loading...</span>}
+                    <div>
+                        <br/>
+                        <button type="submit" className="buttonStyle1">Enter</button>
+                    </div>
+                </form>
+            </div>
+
 
         </div>
     )
