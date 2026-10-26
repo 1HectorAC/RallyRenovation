@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { RenovationService, type renovationShortType } from "../services/RenovationService";
 import { useAuth } from "../hooks/useAuth";
-import RenovationCard from "../context/RenovationCard";
+import RenovationCard from "../components/RenovationCard";
 
 function RenovationDashboard() {
     const [renovations, setRenovations] = useState<renovationShortType[]>([]);
@@ -47,7 +47,6 @@ function RenovationDashboard() {
                         description={i.description}
                         ownerName={i.ownerName}
                         catagoryList={i.catagoryList}
-                        url={`/Renovation/${i.id}`}
                     />
                 ))}
             </div>

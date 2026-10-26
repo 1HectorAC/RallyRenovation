@@ -3,29 +3,7 @@
     --main-green:rgb(38, 74, 38);
 }
 
-.shortRenovationCard{
-    background-color:rgb(223, 222, 231);
-    margin: 5px;
-    padding: 10px;
-    border-radius: 5px;
-}
-.heroSection{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--main-back);
-}
-.heroTextSection{
-    width: 55%;
-    text-align: center;
-}
-.heroImageSection{
-    width: 44%;
-}
-/*
-.heroImage{
-    
-}*/
+/*************** Buttons ********************/
 .heroButton{
     
     border-radius: 5px;
@@ -34,7 +12,6 @@
     padding: 10px;
     font-size: 21px;
     border: var(--main-green);
-
 }
 .buttonStyle1{
     background-color: var(--main-green);
@@ -53,10 +30,28 @@
     padding: 5px;
     font-size: 18px;
 }
+
+/*************** Home Section ********************/
+.heroSection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-back);
+}
+.heroTextSection{
+    width: 55%;
+    text-align: center;
+}
+.heroImageSection{
+    width: 44%;
+}
 .recentPostSection{
     text-align: center;
     padding: 20px;
 }
+
+
+
 .centerContainer{
     display: flex;
     justify-content: center;
@@ -70,7 +65,28 @@
     padding: 30px;
     width: 30%;
 }
+.centerSection{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 
 .error{
     color:red;
+}
+
+.panelLink{
+    text-decoration: none;
+    color: black;
+}
+
+.shortRenovationCard{
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 25px;
+    
+}
+.shortRenovationCard .subHeader{
+    color:rgb(104, 104, 104);
+    font-size: 14px;
 }
