@@ -100,8 +100,9 @@ function Renovation() {
     }, [])
     return (
         <div>
-            <div className="headerSection">
+            <div className="headerSectionRenovation">
                 <h1>Renovation</h1>
+
                 <p>{renovation?.totalLikes.toString()} Likes</p>
                 <div>
                     <p>{renovation?.isPrivate ? "private" : "public"}</p>
@@ -131,25 +132,33 @@ function Renovation() {
                     }
                 </div>
             </div>
-            {error && <p className="error">{error}</p>}
-            {isLoading && <p>Loading...</p>}
+            <div className="renovationContentSection">
+                {error && <p className="error">{error}</p>}
+                {isLoading && <p>Loading...</p>}
 
-            {renovation && (
-                <div>
-                    <p>Title: {renovation.title}</p>
-                    <p>By: {renovation.ownerName}</p>
-                    <p>Description: {renovation.description}</p>
-                    <p>Date: {renovation.date}</p>
-                    <p>catagories: {renovation.catagoryList}</p>
-                    <p>Cost: {renovation.cost?.toString() ?? ""}</p>
-                    <p>Total Days:{renovation.totalDays?.toString() ?? ""}</p>
-                    <p>Company: {renovation.company}</p>
-                    <p>Location: {renovation.location}</p>
-                    <p>Before Images:{renovation.beforeImageList}</p>
-                    <p>After Images:{renovation.afterImageList}</p>
-                    <p>AccessedByOwner: {renovation.accessedByOwner ? "true" : "false"}</p>
-                </div>
-            )}
+                {renovation && (
+                    <div>
+                        <h5>{renovation.title}</h5>
+                        <p className="subHeaderGrey">By: {renovation.ownerName}</p>
+                        <p className="subHeaderGrey">Posted: {renovation.date}</p>
+                        <p>catagories: {renovation.catagoryList}</p>
+                        <p>Description: {renovation.description}</p>
+                        <span className="sectionEqualSpace">
+                            <p>Cost: {renovation.cost?.toString() ?? "N/A"}</p>
+                            <p>Total Days:{renovation.totalDays?.toString() ?? "N/A"}</p>
+                            <p>Company: {renovation.company ?? "N/A"} </p>
+                            <p>Location: {renovation.location ?? "N/A"} </p>
+                        </span>
+                        <p>Before Images:{renovation.beforeImageList}</p>
+                        <p>After Images:{renovation.afterImageList}</p>
+                    </div>
+                )}
+            </div>
+            <div className="commentSection">
+                <h5>Comments</h5>
+                <p>Coming soon</p>
+            </div>
+
         </div>
     )
 }
