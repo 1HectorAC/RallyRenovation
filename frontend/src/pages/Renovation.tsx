@@ -100,7 +100,7 @@ function Renovation() {
     }, [])
     return (
         <div>
-            <div className="headerSectionRenovation">
+            <div className="headerSectionRenovation paddedSection1">
                 <h1>Renovation</h1>
 
                 <p>{renovation?.totalLikes.toString()} Likes</p>
@@ -132,7 +132,7 @@ function Renovation() {
                     }
                 </div>
             </div>
-            <div className="renovationContentSection">
+            <div className="renovationContentSection paddedSection1">
                 {error && <p className="error">{error}</p>}
                 {isLoading && <p>Loading...</p>}
 
@@ -154,7 +154,7 @@ function Renovation() {
                     </div>
                 )}
             </div>
-            <div className="commentSection">
+            <div className="commentSection paddedSection1">
                 <h5>Comments</h5>
                 <p>Coming soon</p>
             </div>

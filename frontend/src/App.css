@@ -1,7 +1,8 @@
 :root {
     --main-back: rgb(220, 208, 183);
     --main-green: rgb(38, 74, 38);
-    --side-padding-value: 40px;
+    --side-padding-value: 300px;
+    --side-padding-value-small: 50px;
 }
 
 /*************** Buttons ********************/
@@ -101,17 +102,9 @@
 
 .headerSectionRenovation {
     background-color: var(--main-back);
-    padding-left: var(--side-padding-value);
-    padding-right: var(--side-padding-value);
     display:flex;
     justify-content: space-between;
     align-items: center;
-
-}
-
-.renovationContentSection {
-    padding-left: var(--side-padding-value);
-    padding-right: var(--side-padding-value);
 }
 
 .subHeaderGrey {
@@ -121,10 +114,18 @@
 }
 .sectionEqualSpace{
     display:flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 .commentSection{
-    padding: 20px var(--side-padding-value) 20px var(--side-padding-value);
- 
     background-color: var(--main-back);
+}
+
+.paddedSection1{
+    padding: 20px var(--side-padding-value) 20px var(--side-padding-value);
+}
+
+@media(max-width: 700px){
+    .paddedSection1{
+    padding: 20px var(--side-padding-value-small) 20px var(--side-padding-value-small);
+}
 }
