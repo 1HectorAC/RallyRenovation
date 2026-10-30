@@ -101,28 +101,32 @@ function Renovation() {
     return (
         <div>
             <div className="headerSectionRenovation paddedSection1">
-                <h1>Renovation</h1>
-
-                <p>{renovation?.totalLikes.toString()} Likes</p>
                 <div>
-                    <p>{renovation?.isPrivate ? "private" : "public"}</p>
+                    <h1>Renovation</h1>
+
+                </div>
+
+                <p style={{ margin:"0px"}}>{renovation?.isPrivate ? "private" : "public"}</p>
+                <p style={{ margin:"0px"}}>{renovation?.totalLikes.toString()} Likes</p>
+                <div>
+                    
                     {isAuthenticated &&
                         <div>
                             {renovation?.accessedByOwner ?
                                 <span>
-                                    <Link to={`/RenovationEdit/${id}`}><button className="btn btn-primary">Edit</button></Link>
-                                    <button onClick={onClickDelete} className="btn btn-primary">Delete</button>
+                                    <Link to={`/RenovationEdit/${id}`}><button className="buttonStyle2">Edit</button></Link>
+                                    <button onClick={onClickDelete} className="buttonStyle2">Delete</button>
                                 </span>
                                 :
                                 <span>
                                     {isLiked ?
-                                        <button className="btn btn-primary" onClick={onUnlike}>Unlike</button> :
-                                        <button className="btn btn-primary" onClick={onLike}>Like</button>
+                                        <button className="buttonStyle2" onClick={onUnlike}>Unlike</button> :
+                                        <button className="buttonStyle2" onClick={onLike}>Like</button>
                                     }
 
                                     {isFollowingOnwer ?
-                                        <button className="btn btn-primary" onClick={onUnfollow}>UnFollowing</button> :
-                                        <button className="btn btn-primary" onClick={onFollow}>Follow</button>
+                                        <button className="buttonStyle2" onClick={onUnfollow}>UnFollowing</button> :
+                                        <button className="buttonStyle2" onClick={onFollow}>Follow</button>
                                     }
 
                                 </span>

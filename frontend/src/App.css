@@ -32,6 +32,8 @@
     border-radius: 5px;
     padding: 5px;
     font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 /*************** Home Section ********************/
@@ -128,4 +130,31 @@
     .paddedSection1{
     padding: 20px var(--side-padding-value-small) 20px var(--side-padding-value-small);
 }
+}
+
+
+/*************** Dashboard Section ********************/
+
+.baseBackground{
+    background-color: var(--main-back);
+}
+
+.headerSection1{
+    padding: 20px 0px 20px 0px;
+}
+.subHeaderSection1{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.contentSection1{
+    display:flex;
+}
+.contentSectionSplitLarger{
+    flex-grow: 2;
+}
+.likedCard{
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
 }
