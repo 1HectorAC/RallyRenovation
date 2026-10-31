@@ -29,14 +29,21 @@ function RenovationDashboard() {
         fetchRenovations();
     }, [])
     return (
-        <div>
-            <h1>Renovations Dasboard</h1>
-            <Link to="/RenovationCreate"><button>Add</button></Link>
+        <div className="paddedSection1 baseBackground">
+            <div className="headerSection1">
+                <h1>My Renovations</h1>
+            </div>
+            <div className="subHeaderSection1">
+                <p>/ <Link to="/Dashboard">Home</Link> / MyRenovations</p>
+                <Link to="/RenovationCreate"><button className="buttonStyle2">Add</button></Link>
+            </div>
+
             <div>
-                <h5>Some Stats</h5>
+                <h5>Stats</h5>
+                <p>Coming soon</p>
             </div>
             <div>
-                <h5>My Renovation</h5>
+                <h5>Renovations</h5>
                 {error && <p className="error">{error}</p>}
                 {isLoading && <p>Loading...</p>}
                 {renovations.map((i, x) => (
