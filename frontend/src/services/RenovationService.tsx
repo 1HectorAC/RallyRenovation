@@ -72,6 +72,16 @@ export const RenovationService = {
         return data;
     },
 
+    getLikedByUser: async (token:string) =>{
+        const res = await fetch(API_URL + "/like", {
+            headers: {"Authorization": `Bearer ${token}`}
+        });
+        if(!res.ok)
+            throw new Error("API call failed");
+        const data: renovationShortType[] = await res.json();
+        return data;
+    },
+
     get: async (token: string | null, id: Number) => {
         console.log("RenovationService: get called")
 
