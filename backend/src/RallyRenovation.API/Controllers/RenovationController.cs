@@ -162,7 +162,7 @@ public class RenovationController : ControllerBase
         if (!result.IsSuccess)
             return BadRequest(result.Error);
 
-        return Ok();
+        return Ok(result.Value);
     }
 
     [HttpGet("follow")]
